@@ -1,0 +1,10 @@
+{
+  "name": "selfie-navidena-qr",
+  "version": "1.0.0",
+  "description": "Cabina web de selfies navideñas con marcos, cambio de fondo con IA en tiempo real y generador de código QR.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  }
+}

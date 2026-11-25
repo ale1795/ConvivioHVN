@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#091712" />
+    <title>Generador de Código QR — Selfie Navideña</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="snow-backdrop" aria-hidden="true"></div>
+
+    <main class="qr-page-shell">
+      <header class="qr-topbar">
+        <div>
+          <h1>🎄 Generador de Código QR</h1>
+          <p>Crea, descarga o imprime el QR para que todos escaneen y se tomen su selfie navideña.</p>
+        </div>
+
+        <a href="./index.html" class="btn btn-secondary">
+          📷 Abrir Cabina Selfie
+        </a>
+      </header>
+
+      <section class="qr-grid">
+        <!-- Controls Panel -->
+        <div class="panel-card controls-column">
+          <h2>Configurar Código QR</h2>
+
+          <div id="localUrlAlert" class="alert-banner hidden">
+            <strong>Importante para celulares:</strong> Ahora mismo el enlace es local
+            (<code id="detectedOriginCode">localhost</code>). Los celulares necesitan un enlace público con
+            <strong>HTTPS</strong> para abrir la cámara. Sube esta carpeta gratis a
+            <strong>Netlify Drop</strong>, <strong>Vercel</strong> o <strong>GitHub Pages</strong> y pega aquí
+            tu enlace público <code>https://...</code>.
+          </div>
+
+          <div class="field-group">
+            <label for="urlInput">Enlace que abrirá el QR (URL de la cabina)</label>
+            <input
+              id="urlInput"
+              class="field-input"
+              type="url"
+              placeholder="https://tu-cabina-navidena.netlify.app"
+              autocomplete="off"
+            />
+            <span class="field-hint">
+              Al escanear este QR con la cámara del celular se abrirá directamente la cabina de selfies navideñas.
+            </span>
+          </div>
+
+          <div class="field-group">
+            <label for="titleInput">Título del póster (opcional)</label>
+            <input
+              id="titleInput"
+              class="field-input"
+              type="text"
+              value="¡Tómate tu Selfie Navideña!"
+              maxlength="48"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="subtitleInput">Instrucciones del póster</label>
+            <input
+              id="subtitleInput"
+              class="field-input"
+              type="text"
+              value="Escanea el QR, elige tu marco o fondo navideño y descarga tu foto al instante."
+              maxlength="110"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>Estilo del póster imprimible</label>
+            <div class="theme-pills" role="radiogroup" aria-label="Estilo del póster">
+              <button class="theme-pill is-active" type="button" data-theme="pine">🌲 Pino y Oro</button>
+              <button class="theme-pill" type="button" data-theme="crimson">🎅 Rojo Festivo</button>
+              <button class="theme-pill" type="button" data-theme="ivory">❄️ Marfil Claro</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="downloadQrOnlyBtn" class="btn btn-gold" type="button">
+              ⬇️ Descargar QR (PNG)
+            </button>
+            <button id="downloadPosterBtn" class="btn btn-primary" type="button">
+              🖼️ Descargar Póster (PNG)
+            </button>
+            <button id="printPosterBtn" class="btn btn-secondary" type="button">
+              🖨️ Imprimir
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Printable Poster Preview -->
+        <div class="poster-preview-wrap">
+          <article id="posterCard" class="poster-card theme-pine">
+            <div class="poster-ornament" aria-hidden="true">❄ ✦ 🎄 ✦ ❄</div>
+            <h2 id="posterTitle" class="poster-title">¡Tómate tu Selfie Navideña!</h2>
+            <p id="posterSubtitle" class="poster-subtitle">
+              Escanea el QR, elige tu marco o fondo navideño y descarga tu foto al instante.
+            </p>
+
+            <div class="qr-frame-box">
+              <canvas id="qrCanvas" width="512" height="512" aria-label="Código QR escaneable"></canvas>
+            </div>
+
+            <div class="poster-steps">
+              <span>1. Escanea</span>
+              <span>•</span>
+              <span>2. Elige fondo o marco</span>
+              <span>•</span>
+              <span>3. Descarga tu foto</span>
+            </div>
+
+            <div id="posterUrlPill" class="poster-url-pill">https://...</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Quick Free Hosting Guide -->
+      <section class="panel-card deploy-section">
+        <h2>¿Cómo activarlo gratis en 1 minuto para que cualquier celular lo escanee?</h2>
+        <div class="deploy-tips">
+          <div class="tip-box">
+            <strong>1. Sube la carpeta gratis (HTTPS)</strong>
+            Arrastra esta carpeta completa a <strong>app.netlify.com/drop</strong> (o publícala en GitHub Pages /
+            Vercel). Te dará al instante un enlace seguro <code>https://...</code>.
+          </div>
+          <div class="tip-box">
+            <strong>2. Abre /qr.html en tu enlace</strong>
+            Entra a <code>https://tu-enlace/qr.html</code> o pega tu enlace aquí arriba. El código QR se
+            actualizará automáticamente.
+          </div>
+          <div class="tip-box">
+            <strong>3. Imprime o proyecta el QR</strong>
+            Descarga el QR en alta resolución o imprime el póster. Los invitados solo apuntan su cámara ¡y listo!
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Battle-tested ISO/IEC 18004 QR Code Generator (Kazuhiko Arase, MIT) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script type="module" src="./js/qr-page.js"></script>
+  </body>
+</html>
